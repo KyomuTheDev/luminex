@@ -1,0 +1,53 @@
+WHITESPACE = _{ " " | "\t" | NEWLINE }
+COMMENT    = _{ ("//" ~ !NEWLINE ~ ANY*) | ("/*" ~ ANY* ~ "*/") }
+
+Quote                = _{ "\"" | "'" }
+Colon                = _{ ":" }
+Semicolon            = _{ ";" }
+Underscore           = _{ "_" }
+QuestionMark         = _{ "?" }
+Comma                = _{ "," }
+Dot                  = _{ "." }
+Tilde                = _{ "~" }
+RightBracket         = _{ "{" }
+LeftBracket          = _{ "}" }
+RightBrace           = _{ "[" }
+LeftBrace            = _{ "]" }
+RightParenthesis     = _{ "(" }
+LeftParenthesis      = _{ ")" }
+Add                  = _{ "+" }
+Subtract             = _{ "-" }
+Multiply             = _{ "*" }
+Divide               = _{ "/" }
+Modulo               = _{ "%" }
+Length               = _{ "#" }
+GreaterThan          = _{ ">" }
+LessThan             = _{ "<" }
+And                  = _{ "&&" }
+Or                   = _{ "||" }
+GreaterThanOrEqualTo = _{ ">=" }
+LessThanOrEqualTo    = _{ "<=" }
+EqualTo              = _{ "==" }
+NotEquals            = _{ "!=" }
+Not                  = _{ "!" }
+Equals               = _{ "=" }
+EqualsMultiply       = _{ "*=" }
+EqualsDivide         = _{ "/=" }
+EqualsSubtract       = _{ "-=" }
+EqualsAdd            = _{ "+=" }
+RightShift           = _{ ">>" }
+LeftShift            = _{ "<<" }
+BitwiseNot           = _{ "~" }
+BitwiseAnd           = _{ "&" }
+BitwiseOr            = _{ "|" }
+BitwiseXor           = _{ "^" }
+
+BinaryOp = { Subtract }
+
+atom = _{ Expr | (Number | Identifier) }
+
+Expr = { atom ~ (BinaryOp ~ atom)* }
+
+Number = { (NUMBER+ ~ "." ~ NUMBER+) | ("." ~ NUMBER+) | NUMBER+ }
+String = { PUSH(Quote) ~ (!PEEK ~ (ANY))* ~ POP }
+Identifier = { !NUMBER ~ (LETTER ~ "_") ~ LETTER | "_" | NUMBER } 

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{
     tokenizer::{Kind, Tokenizer, Token},
     utils::get_error_message,
@@ -60,37 +62,51 @@ pub struct ASTToken {
     scope: Vec<ASTToken>,
 }
 
-pub struct AST {
-    index: usize,
-    tokens: Vec<Token>,
+fn binding_power(op: String) -> (u8, u8) {
+    match op.as_str() {
+        "+" | "-" => (1, 2),
+        "*" | "/" | "%" => (2, 3),
+        _ => panic!("Bad operator."),
+    }
 }
 
-impl AST {
-    pub fn new(input: &str) -> AST {
-        let tokens = Tokenizer::new(input).tokenize(input);
+pub struct Parser {
+    index: usize,
+    // precedence_map: HashMap<Kind, u8>,
+}
 
-        AST {
+impl Parser {
+    pub fn new(input: &str) -> Parser {
+        /*
+        * Precedence map for if I decide to compile to asm.
+        */
+        // let mut precedence_map = HashMap::new();
+
+        // // logical operators
+        // precedence_map.insert(Kind::Operator(">".to_owned()), 0); // greater than
+        // precedence_map.insert(Kind::Operator("<".to_owned()), 0); // less than
+        // precedence_map.insert(Kind::Operator("==".to_owned()), 0); // equality
+        // precedence_map.insert(Kind::Operator("!=".to_owned()), 0); // inequality
+        // precedence_map.insert(Kind::Operator(">=".to_owned()), 0); // greater than or equal
+        // precedence_map.insert(Kind::Operator("<=".to_owned()), 0); // less than or equal
+
+        // // arithmetic operators
+        // precedence_map.insert(Kind::Operator("+".to_owned()), 1); // addition
+        // precedence_map.insert(Kind::Operator("-".to_owned()), 1); // subtraction
+        // precedence_map.insert(Kind::Operator("*".to_owned()), 2); // multiplication
+        // precedence_map.insert(Kind::Operator("**".to_owned()), 2); // exponentiation
+        // precedence_map.insert(Kind::Operator("/".to_owned()), 2); // division
+        // precedence_map.insert(Kind::Operator("%".to_owned()), 2); // modulus
+
+        Parser {
             index: 0,
-            tokens
+            // precedence_map
         }
     }
 
-    fn peek(&mut self, ahead: Option<usize>) -> Option<&Token> {
-        let look_ahead = ahead.unwrap_or(1);
-        let ahead_token = self.tokens.get(self.index + look_ahead).unwrap();
+    fn program(&mut self) {}
 
-        if ahead_token.kind == Kind::EOF {
-            return None;
-        }
+    fn eat(&mut self, kind: Kind) -> Token {
         
-        Some(ahead_token)
-    }
-
-    fn consume(&mut self) {}
-
-    pub fn parse(&mut self, input: Vec<Token>) {
-        while self.peek(Some(1)).is_some() {
-
-        }
     }
 }
